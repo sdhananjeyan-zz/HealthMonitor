@@ -50,18 +50,37 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 			String cpuUtilS = cpuStats.split(":")[1].split(",")[1].split("%")[0];
 			String cpuAvail = cpuStats.split(":")[1].split(",")[3].split("%")[0];
 
-			String memToatl = memoryStats.split(":")[1].split(",")[0].split("k")[0];
-			String memUsed = memoryStats.split(":")[1].split(",")[1].split("k")[0];
-			String memAvail = memoryStats.split(":")[1].split(",")[2].split("k")[0];
+			String memToatl = memoryStats.split(":")[1].split(",")[0].split("k")[0].trim();
+			String memUsed = memoryStats.split(":")[1].split(",")[1].split("k")[0].trim();
+			String memAvail = memoryStats.split(":")[1].split(",")[2].split("k")[0].trim();
 
 			System.out.println(cpuUtilU + " " + cpuUtilS + " " + cpuAvail);
 			System.out.println(memToatl + " " + memUsed + " " + memAvail);
+			
+			if(cpuUtilU.contains(" ")) {
+				cpuUtilU = cpuUtilU.split(" ")[1];
+			}
+			if(cpuUtilS.contains(" ")) {
+				cpuUtilS = cpuUtilS.split(" ")[1];
+			}
+			if(cpuAvail.contains(" ")) {
+				cpuAvail = cpuAvail.split(" ")[1];
+			}
+			if(memToatl.contains(" ")) {
+				memToatl = memToatl.split(" ")[1];
+			}
+			if(memUsed.contains(" ")) {
+				memUsed = memUsed.split(" ")[1];
+			}
+			if(memAvail.contains(" ")) {
+				memAvail = memAvail.split(" ")[1];
+			}
 
 			VMBasedData vmBasedData = new VMBasedData();
 			vmBasedData.setIpAddress(ipAddress);
-			vmBasedData.setMemory((Double.parseDouble(memUsed.trim()) / Double.parseDouble(memToatl.trim())) * 100);
-			vmBasedData.setProcess(((Double.parseDouble(cpuUtilU.trim()) + Double.parseDouble(cpuUtilS.trim()))
-					/ (Double.parseDouble(cpuUtilU.trim()) + Double.parseDouble(cpuUtilS.trim()) + Double.parseDouble(cpuAvail.trim()))) * 100);
+			vmBasedData.setMemory((Double.parseDouble(memUsed) / Double.parseDouble(memToatl)) * 100);
+			vmBasedData.setProcess(((Double.parseDouble(cpuUtilU) + Double.parseDouble(cpuUtilS))
+					/ (Double.parseDouble(cpuUtilU) + Double.parseDouble(cpuUtilS) + Double.parseDouble(cpuAvail))) * 100);
 			vmBasedData.setTime(toDate(date));
 			Session hbSession = FactoryGenerator.sessionFactory.openSession();
 
