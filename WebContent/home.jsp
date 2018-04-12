@@ -56,27 +56,67 @@
 						$scope.calc = function calculate() {
 							
 						}
+						$scope.setMachine = function(machine){
+							$scope.machine = machine;
+						}
+						$scope.getData = function(ipAddress){
+							$http({
+								method : 'POST',
+								url : '/HealthMonitor/data/get_vm_data',
+								data:{
+									'ipAddress':ipAddress
+								}
+							}).then(function successCallback(response) {
+									var processColumn = ["cpu"];
+									var memoryColumn = ["memory"];
+									var timeColumn = ["times"];
+									
+									var processResponse = response.data.memory;
+									var memoryResponse = response.data.memory;
+									var timeResponse = response.data.time;
+									
+									for(var i=0;i<processResponse.length;i++){
+										if(timeResponse[i]==null){
+											continue;
+										}
+										processColumn.push(processResponse[i]);
+										memoryColumn.push(memoryResponse[i]);
+										timeColumn.push(timeResponse[i]);
+									}
+									
+									
+									loadChart(processColumn,memoryColumn,timeColumn);
+									for(var i=0;i<$scope.machines.length;i++){
+										if($scope.machines[i].ipAddress==ipAddress){
+											$scope.machine = $scope.machines[i];
+										}
+									}
+									setTimeout(function(){
+										if($scope.machine!=null){
+												$scope.getData($scope.machine.ipAddress);
+										}
+									}, 3000);
+									
+							})
+						}
 						$scope.init = function(){
 							$('#header').html(getHeader($scope.user));
 							$('#footer').html(getFooter());
-							
-							//$scope.calc();
+							$http({
+								method : 'POST',
+								url : '/HealthMonitor/data/get_machines.action'
+							}).then(function successCallback(response) {
+									$scope.machines = response.data.machines;
+									$scope.machine = $scope.machines[0];
+									$scope.getData($scope.machine.ipAddress);
+									
+							})
+						
 						}
-						$scope.machines = [
-							{
-								"ipAddress": "127.0.0.1",
-								"hostName":"my-win"
-							},
-							{
-								"ipAddress": "127.0.0.2",
-								"hostName":"my-lin"
-							},
-							{
-								"ipAddress": "127.0.0.3",
-								"hostName":"my-uni"
-							},
-						]
+				
+						$scope.machines = [];
 						$scope.init();
+						$scope.machine=null;
 					});
 </script>
 
@@ -89,7 +129,7 @@
 		<header id="header" class="nav-menu fixed-top"> </header>
 		<div class="container">
 			<div>
-				<h1>Operations</h1>
+				<h1>{{machine.ipAddress}} - Data</h1>
 
 			</div>
 			<div class="row">
@@ -101,8 +141,8 @@
 									<div class="form-group">
 										<ul class="checklist">
 											<li ng-repeat = "machine in machines">
-											<button type="button" ng-click="login()" style="width: 100%"
-												class="btn btn-primary hvr-sweep-to-right">{{machine.ipAddress}} - {{machine.hostName}}</button>
+											<button type="button" ng-click="setMachine(machine)" style="width: 100%"
+												class="btn btn-primary hvr-sweep-to-right">{{machine.ipAddress}}</button>
 											</li>
 										</ul>
 									</div>
@@ -170,25 +210,59 @@
 </body>
 <script type="text/javascript">
 try{
-var cpuChart = c3.generate({
-    bindto: '#cpuChart',
-    data: {
-      columns: [
-        ['data1', 30, 200, 100, 400, 150, 250],
-        ['data2', 50, 20, 10, 40, 15, 25]
+ var cpuChart = c3.generate({
+	 bindto: '#cpuChart',
+	    data: {
+	    	 x: 'times',
+	         xFormat: '%Y-%m-%d %H:%M:%S',
+	    columns: [
+	    	['times','2015-09-17 18:20:34','2015-09-17 18:25:42','2015-09-17 18:30:48','2015-09-17 18:35:30','2015-09-17 18:40:34','2015-09-17 18:50:34'],
+    	    ['cpu', 30, 200, 100, 400, 150, 250],
       ]
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d %H:%M:%S' // how the date is displayed
+            }
+        }
     }
-});
+}); 
 var memorychart = c3.generate({
     bindto: '#memoryChart',
     data: {
-      columns: [
-        ['data1', 30, 200, 100, 400, 150, 250],
-        ['data2', 50, 20, 10, 40, 15, 25]
+    	 x: 'times',
+         xFormat: '%Y-%m-%d %H:%M:%S',
+    columns: [
+    	['times','2015-09-17 18:20:34','2015-09-17 18:25:42','2015-09-17 18:30:48','2015-09-17 18:35:30','2015-09-17 18:40:34','2015-09-17 18:50:34'],
+        ['memory', 50, 20, 10, 40, 15, 25]
       ]
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d %H:%M:%S' // how the date is displayed
+            }
+        }
     }
 });
 
+function loadChart(colP,colM,colT){
+	 cpuChart.load({
+		  columns: [
+			  colT,
+		    colP
+		  ]
+		}); 
+	memorychart.load({
+		  columns: [
+			  colT,
+		    colM
+		  ]
+		}); 
+}
 }catch(e){
 	alert(e);
 }

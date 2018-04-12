@@ -78,9 +78,7 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 			VMBasedData vmBasedData = new VMBasedData();
 			vmBasedData.setIpAddress(ipAddress);
 			vmBasedData.setMemory((Double.parseDouble(memUsed) / Double.parseDouble(memToatl)) * 100);
-			vmBasedData.setProcess(((Double.parseDouble(cpuUtilU) + Double.parseDouble(cpuUtilS))
-					/ (Double.parseDouble(cpuUtilU) + Double.parseDouble(cpuUtilS) + Double.parseDouble(cpuAvail)))
-					* 100);
+			vmBasedData.setProcess(100-Double.parseDouble(cpuAvail));
 			vmBasedData.setTime(toDate(date));
 			Session hbSession = FactoryGenerator.sessionFactory.openSession();
 
@@ -89,16 +87,20 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 				Criteria criteria = hbSession.createCriteria(RegisteredMachines.class)
 						.add(Restrictions.eq("ipAddress", ipAddress));
 				List<VMBasedData> vms = criteria.list();
+				
 				if (vms != null && vms.size() != 1) {
 					result = "failure";
 					message = "vm " + ipAddress + " not registered";
 
 				} else {
+					vms.get(0).getIpAddress();
 					hbSession.save(vmBasedData);
 					hbSession.getTransaction().commit();
 				}
 
 			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(e);
 				result = "failue";
 				message = e.getMessage();
 			} finally {

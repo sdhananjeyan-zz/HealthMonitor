@@ -22,6 +22,22 @@
 			</interceptor-ref>
 			<result type="json" />
 		</action>
+		
+		<action name="get_machines" class="com.healthmonitor.data.GetMachines">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+			<result type="json" />
+		</action>
+		
+		<action name="get_vm_data" class="com.healthmonitor.data.GetVMBasedData">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+			<result type="json" />
+		</action>
 	</package>
 	
 	
