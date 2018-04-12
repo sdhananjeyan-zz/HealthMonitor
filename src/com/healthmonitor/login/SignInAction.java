@@ -59,6 +59,7 @@ public class SignInAction extends ActionSupport implements SessionAware {
 				result = "invalid password";
 			}
 		} catch (org.hibernate.ObjectNotFoundException e) {
+			e.printStackTrace();
 			systemUser = null;
 			result = "no user";
 		} catch (Exception e) {
