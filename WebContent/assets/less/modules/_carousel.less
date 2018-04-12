@@ -1,0 +1,110 @@
+/*---------- 2.4  Bootstrap Carousel ----------*/
+
+.carousel{
+	min-height: 500px;
+	.carousel-inner{
+		height: 100%;
+		position: absolute;
+	}
+	.item{
+		height: 100%;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+	}
+	.carousel-control{
+		width: 10%;
+		text-align: left;
+		z-index: 9;
+		[class^='icon-'], .fa, .glyphicon {
+			font-size: 20px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -16px;
+		}
+	}
+	.carousel-control.left{
+		background: transparent;
+		&:hover{
+			#gradient.horizontal(@start-color : rgba(0,0,0,.5); @end-color : rgba(0,0,0,0); @start-percent : 0%; @end-percent : 100%);
+		}
+	}
+	.carousel-control.right{
+		background: transparent;
+		&:hover{
+			#gradient.horizontal(@start-color : rgba(0,0,0,0); @end-color : rgba(0,0,0,.5); @start-percent : 0%; @end-percent : 100%);
+		}
+	}
+
+	.carousel-indicators li{
+		@height: 12px;
+		height: @height;
+		width: @height;
+		margin: 0 2px;
+		border: none;
+		background:#fff;
+		&.active{
+			height: @height;
+			width: @height;
+			background: @primary-color;
+		}
+	}
+}
+
+.carousel-fade {
+	.carousel-inner {
+		.item {
+			transition-property: opacity;
+		}
+
+		.item,
+		.active.left,
+		.active.right {
+			opacity: 0;
+		}
+
+		.active,
+		.next.left,
+		.prev.right {
+			opacity: 1;
+		}
+
+		.next,
+		.prev,
+		.active.left,
+		.active.right {
+			left: 0;
+			transform: translate3d(0, 0, 0);
+		}
+	}
+}
+
+
+@media(max-width: @screen-media-sm){
+	.carousel .carousel-control{
+		display: none;
+		[class^='icon-'], .fa, .glyphicon {
+			font-size: 20px;
+		}
+	}
+	.carousel-caption{
+		.main-header{
+			font-size: 2.4em;
+		}
+	}
+
+	.img-responsive, .thumbnail > img, 
+	.thumbnail a > img, 
+	.carousel-inner > 
+	.item > img, 
+	.carousel-inner > .item > a > img{
+		width: auto;
+		height: 100%;
+	}
+}
+
+
+
+
+

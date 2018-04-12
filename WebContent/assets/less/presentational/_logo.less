@@ -1,0 +1,98 @@
+/*---------- 5.0 Presentaional css ----------*/
+/*---------- 5.1 Mold Discover Logo ----------*/
+
+@logo-font: 'Satisfy', cursive;
+@logo-mark: 'Caveat', cursive;
+
+.mold-logo{
+	display: table;
+	@height: 40px;
+	position: relative;
+	vertical-align: bottom;
+	.logo{
+		float: left;
+		height: @height;
+		width: @height;
+		line-height: @height;
+		.border-radius(4px);
+		text-align: left;
+
+		background: @primary-color;
+		color: @base-color;
+
+		position: relative;
+		&:after{
+			content: 'M';
+			font-family: @logo-mark;
+			color: @base-color;
+			font-size: 46px;
+			font-weight: bold;
+			position: absolute;
+			top: 0;
+			left: -4px;
+		}
+	}
+	.logo-txt{
+		height: @height;
+		line-height: @height;
+		padding-left: @height + 8px;
+		padding-top: 6px;
+		font-size: 36px;
+		text-align: right;
+		color: @base-contrast;
+		font-family: @logo-font;
+	}
+	.mold{
+		font-size: 14px;
+		line-height: 10px;
+		color:  @primary-color;
+		position: absolute;
+		top: 3px;
+		right: 0;
+	}
+}
+
+.fixed{
+	.mold-logo{
+		margin-top: 15px;
+		.transition(all .2s linear);
+	}
+}
+
+@media screen and (max-width: @screen-media-sm){
+	.mold-logo{
+		margin-top: 10px;
+		@height: 40px;
+		.logo{
+			height: @height;
+			width: @height;
+			line-height: @height;
+			&:after{
+				font-size: 45px;
+			}
+		}
+		.logo-txt{
+			height: @height;
+			line-height: @height;
+			padding-left: @height + 10px;
+			padding-top: 6px;
+			font-size: 30px;
+			text-align: right;
+			color: @base-contrast;
+			font-family: @logo-font;
+		}
+		.mold{
+			font-size: 13px;
+			line-height: 10px;
+			color:  @primary-color;
+			position: absolute;
+			top: 3px;
+			right: 0;
+		}
+	}
+	.boxed{
+		.nav-boxed .navbar-brand, .mold-logo{
+			margin-top: 0px;
+		}
+	}
+}
