@@ -22,7 +22,8 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 	Map<String, Object> session = new HashMap<String, Object>();
 	HttpServletRequest request;
 	private String activeUser;
-	private String data;
+	private String cpuStats;
+	private String memoryStats;
 	private String date;
 	private String result = SUCCESS;
 	private String message = "";
@@ -40,14 +41,14 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 //					+ "Mem:   1017060k total,   875564k used,   141496k free,   146388k buffers\r\n"
 //					+ "Swap:        0k total,        0k used,        0k free,   621376k cached";
 
-			String[] parsed = data.split("\n");
-			String cpuUtilU = parsed[2].split(":")[1].split(",")[0].split("%")[0];
-			String cpuUtilS = parsed[2].split(":")[1].split(",")[1].split("%")[0];
-			String cpuAvail = parsed[2].split(":")[1].split(",")[3].split("%")[0];
+			
+			String cpuUtilU = cpuStats.split(":")[1].split(",")[0].split("%")[0];
+			String cpuUtilS = cpuStats.split(":")[1].split(",")[1].split("%")[0];
+			String cpuAvail = cpuStats.split(":")[1].split(",")[3].split("%")[0];
 
-			String memToatl = parsed[3].split(":")[1].split(",")[0].split("k")[0];
-			String memUsed = parsed[3].split(":")[1].split(",")[1].split("k")[0];
-			String memAvail = parsed[3].split(":")[1].split(",")[3].split("k")[0];
+			String memToatl = memoryStats.split(":")[1].split(",")[0].split("k")[0];
+			String memUsed = memoryStats.split(":")[1].split(",")[1].split("k")[0];
+			String memAvail = memoryStats.split(":")[1].split(",")[2].split("k")[0];
 
 			System.out.println(cpuUtilU + " " + cpuUtilS + " " + cpuAvail);
 			System.out.println(memToatl + " " + memUsed + " " + memAvail);
@@ -93,9 +94,7 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 	}
 
 	
-	public void setData(String data) {
-		this.data = data;
-	}
+	
 
 	@Override
 	public void setServletRequest(HttpServletRequest arg0) {
@@ -138,6 +137,18 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 	public void setDate(String date) {
 		this.date = date;
 	}
+
+
+	public void setCpuStats(String cpuStats) {
+		this.cpuStats = cpuStats;
+	}
+
+
+	public void setMemoryStats(String memoryStats) {
+		this.memoryStats = memoryStats;
+	}
+	
+	
 	
 	
 
