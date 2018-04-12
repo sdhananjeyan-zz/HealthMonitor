@@ -58,22 +58,22 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 			System.out.println(memToatl + " " + memUsed + " " + memAvail);
 			
 			if(cpuUtilU.contains(" ")) {
-				cpuUtilU = cpuUtilU.split(" ")[1];
+				cpuUtilU = cpuUtilU.split("( )+")[1];
 			}
 			if(cpuUtilS.contains(" ")) {
-				cpuUtilS = cpuUtilS.split(" ")[1];
+				cpuUtilS = cpuUtilS.split("( )+")[1];
 			}
 			if(cpuAvail.contains(" ")) {
-				cpuAvail = cpuAvail.split(" ")[1];
+				cpuAvail = cpuAvail.split("( )+")[1];
 			}
 			if(memToatl.contains(" ")) {
-				memToatl = memToatl.split(" ")[1];
+				memToatl = memToatl.split("( )+")[1];
 			}
 			if(memUsed.contains(" ")) {
-				memUsed = memUsed.split(" ")[1];
+				memUsed = memUsed.split("( )+")[1];
 			}
 			if(memAvail.contains(" ")) {
-				memAvail = memAvail.split(" ")[1];
+				memAvail = memAvail.split("( )+")[1];
 			}
 
 			VMBasedData vmBasedData = new VMBasedData();
