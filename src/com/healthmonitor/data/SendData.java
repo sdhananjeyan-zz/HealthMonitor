@@ -34,6 +34,10 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 			// String ipAddress = request.getRemoteAddr();
 			String ipAddress = "192.168.1.1";
 			activeUser = (String) session.get("user");
+			
+			System.out.println(cpuStats);
+			System.out.println(memoryStats);
+			System.out.println(date);
 
 //			String data = "top - 18:03:04 up 8 days, 23:49,  2 users,  load average: 0.00, 0.00, 0.00\r\n"
 //					+ "Tasks:  78 total,   1 running,  77 sleeping,   0 stopped,   0 zombie\r\n"
