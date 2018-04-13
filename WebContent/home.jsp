@@ -102,18 +102,66 @@
 						$scope.init = function(){
 							$('#header').html(getHeader($scope.user));
 							$('#footer').html(getFooter());
+							$scope.getMachines();						
+						}
+						$scope.flag =false;
+						$scope.getMachines = function(){
+							
 							$http({
 								method : 'POST',
 								url : '/HealthMonitor/data/get_machines.action'
 							}).then(function successCallback(response) {
 									$scope.machines = response.data.machines;
 									$scope.machine = $scope.machines[0];
-									$scope.getData($scope.machine.ipAddress);
+									if(!$scope.flag){
+										$scope.getData($scope.machine.ipAddress);
+										$scope.flag=true;
+									}
 									
 							})
-						
 						}
-				
+						$scope.add = function(){
+							if($scope.isMachineAvailable($scope.ipToUpdate)){
+								alert("Machine "+ $scope.ipToUpdate+ " already exists");	
+							}else{
+								$http({
+									method : 'POST',
+									url : '/HealthMonitor/config/add_machine.action',
+									data:{
+										'ipAddress':$scope.ipToUpdate
+									},
+									headers: [{'Content-Type': 'application/json'},{'Accept': 'application/json'}]
+								}).then(function successCallback(response) {
+									$scope.getMachines();
+								})
+							}
+						}
+						$scope.remove = function(){
+							
+							if($scope.isMachineAvailable($scope.ipToUpdate)){
+								$http({
+									method : 'POST',
+									url : '/HealthMonitor/config/remove_machine.action',
+									data:{
+										'ipAddress':$scope.ipToUpdate
+									},
+									headers: [{'Content-Type': 'application/json'},{'Accept': 'application/json'}]
+								}).then(function successCallback(response) {
+									$scope.getMachines();
+								})
+							}else{
+								alert("Machine "+ $scope.ipToUpdate+ " not exists");	
+							}	
+						}
+						$scope.isMachineAvailable = function (ipAddress){
+							for(var i = 0 ; i <$scope.machines.length ;i++){
+								if($scope.machines[i].ipAddress == ipAddress){
+									return true;
+								}
+							}
+							return false;
+						}
+						$scope.ipToUpdate;
 						$scope.machines = [];
 						$scope.init();
 						$scope.machine=null;
@@ -155,8 +203,11 @@
 						<div class="panel panel-default">
 								<div class="panel-body">
 									<div class="form-group">
-										<button type="button" ng-click="login()" style="width: 100%"
-												class="btn btn-primary hvr-sweep-to-right">Manage VM's</button>
+										<input type="text" style="width: 100%" ng-model="ipToUpdate"/>
+										<button type="button" ng-click="add()" style="width: 100%"
+												class="btn btn-primary hvr-sweep-to-right">ADD</button>
+										<button type="button" ng-click="remove()" style="width: 100%"
+												class="btn btn-primary hvr-sweep-to-right">Remove</button>
 									</div>
 								</div>
 							</div>
