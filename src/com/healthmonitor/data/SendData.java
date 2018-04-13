@@ -86,7 +86,7 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 				hbSession.beginTransaction();
 				Criteria criteria = hbSession.createCriteria(RegisteredMachines.class)
 						.add(Restrictions.eq("ipAddress", ipAddress));
-				List<VMBasedData> vms = criteria.list();
+				List<RegisteredMachines> vms = criteria.list();
 				
 				if (vms != null && vms.size() != 1) {
 					result = "failure";
@@ -99,6 +99,7 @@ public class SendData extends ActionSupport implements SessionAware, ServletRequ
 				}
 
 			} catch (Exception e) {
+				
 				e.printStackTrace();
 				System.out.println(e);
 				result = "failue";
