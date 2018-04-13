@@ -71,7 +71,7 @@
 									var memoryColumn = ["memory"];
 									var timeColumn = ["times"];
 									
-									var processResponse = response.data.memory;
+									var processResponse = response.data.process;
 									var memoryResponse = response.data.memory;
 									var timeResponse = response.data.time;
 									
@@ -79,7 +79,6 @@
 										if(timeResponse[i]==null){
 											continue;
 										}
-
 										processColumn.push(processResponse[i]);
 										memoryColumn.push(memoryResponse[i]);
 										timeColumn.push(timeResponse[i].substring(0,19));
