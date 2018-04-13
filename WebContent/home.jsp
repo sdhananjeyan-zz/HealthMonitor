@@ -79,9 +79,10 @@
 										if(timeResponse[i]==null){
 											continue;
 										}
+
 										processColumn.push(processResponse[i]);
 										memoryColumn.push(memoryResponse[i]);
-										timeColumn.push(timeResponse[i]);
+										timeColumn.push(timeResponse[i].substring(0,19));
 									}
 									
 									
